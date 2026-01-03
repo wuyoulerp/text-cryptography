@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Text Encryption/Decryption</title>
+        <link rel="stylesheet" href="styles.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&display=swap" rel="stylesheet">
+    </head>
+    <body>
+        <h1 class="font_semibold">Text Encryption/Decryption</h1>
+        <h2>Made using Rust and WASM</h2>
+        <p class="disclaimer">I'm too poor to afford a server, which means no data will be stored. 
+            However, I still don't recommend inputting sensitive files.
+            <br>
+            <b>This website is made f​or educational purposes.</b>
+        </p>
+        <div class="menu">
+            <div class="algorithm_selector_tab">
+                <button class="algo_button" onclick="openAlgo(event, 'rsa_tab_content')">RSA</button>
+                <button class="algo_button" onclick="openAlgo(event, 'aes_tab_content')">AES</button>
+                <button class="algo_button" onclick="openAlgo(event, 'rot13_tab_content')">ROT13</button>
+            </div>
+            <hr style="width:100%">
+            <div id="rsa_tab_content" class="algo" style="display:none">
+                <div class="encryption_decryption_tab">
+                    <button class="mode_button" onclick="openMode(event, 'encrypt_rsa')">Encryption</button>
+                    <button class="mode_button" onclick="openMode(event, 'decrypt_rsa')">Decryption</button>
+                </div>
+                <hr style="width:100%">
+                <div class="explanation">
+                    <h3>RSA</h3>
+                    <p>Short for <b>Rivest-Shamir-Adleman</b> <span class="whisper">(the creators)</span>. It's a <b>public key encryption algorithm</b>, meaning it has two keys (private and public).
+                        <br>
+                        Receiver's <b>public key</b> is used to encrypt the file, and the receiver's <b>private key</b> is used by the receiver to decrypt the file.
+                        <br>
+                        Typically used in digital signatures and certificates, as well as secure communication protocols (TLS/SSL). More often used to encrypt symmetric keys, because it's slow on large files.
+                    </p>
+                </div>
+                <div id="encrypt_rsa" class="element_container" style="display:none">
+                    <div class="io_container">
+                        <div class="input_container">
+                            <button class="button_alt" onclick="rsa_keygen()">Generate key pairs</button>
+                            <textarea id="plaintext_rsa" name="plaintext_rsa" placeholder="Enter plaintext here" 
+                                autocomplete="off" maxlength="500" rows="5"></textarea>
+                            <textarea id="pubkey_output_rsa" name="pubkey_output_rsa" placeholder="Generated public key will be displayed here" 
+                                readonly rows="5" readonly></textarea>
+                        </div>
+                        <textarea id="encrypt_output_rsa" name="encrypt_output_rsa" class="encrypt_output_rsa" 
+                            placeholder="Encrypted text output" readonly></textarea>
+                    </div>
+                    <div class="button_container">
+                        <button class="button_alt" onclick="rsa_encrypt()"><b>Encrypt</b></button>
+                        <button class="button_alt" onclick="rsa_encrypt_clear()"><b>Clear</b></button>
+                    </div>
+                </div>
+                <div id="decrypt_rsa" class="element_container" style="display:none">
+                    <div class="io_container">
+                        <div class="input_container">
+                            <textarea id="ciphertext_rsa" name="ciphertext_rsa" placeholder="Enter ciphertext here" 
+                                autocomplete="off" rows="5"></textarea>
+                        </div>
+                        <textarea id="decrypt_output_rsa" name="decrypt_output_rsa" class="decrypt_output_rsa" 
+                            placeholder="Decrypted text output" readonly></textarea>
+                    </div>
+                    <div class="button_container">
+                        <button class="button_alt" onclick="rsa_decrypt()"><b>Decrypt</b></button>
+                        <button class="button_alt" onclick="rsa_decrypt_clear()"><b>Clear</b></button>
+                    </div>
+                </div>
+            </div>
+            <div id="aes_tab_content" class="algo" style="display:none">
+                <div class="encryption_decryption_tab">
+                    <button class="mode_button" onclick="openMode(event, 'encrypt_aes')">Encryption</button>
+                    <button class="mode_button" onclick="openMode(event, 'decrypt_aes')">Decryption</button>
+                </div>
+                <hr style="width:100%">
+                <div class="explanation">
+                    <h3>AES</h3>
+                    <p>Short for <b>Advanced Encryption Standard</b>, was known as Rijndael <span class="whisper">(the creators; Rijmen and Daemen from Belgium)</span>. 
+                        <br>
+                        Created as a successor to NIST's Data Encryption Standard (DES) because it can be brute-forced. NIST made an open competition and Rijndael was chosen.
+                        <br>
+                        It's a <b>private key encryption algorithm</b>, meaning it only has one key for encryption and decryption.
+                        <br>
+                        Widely used in real life, from encrypted browsing, securing wi-fi networks, cloud storages, messaging, and disk encryption.
+                    </p>
+                </div>
+                <div id="encrypt_aes" class="element_container" style="display:none">
+                    <div class="io_container">
+                        <div class="input_container">
+                            <button class="button_alt" onclick="aes_keygen()">Generate AES key</button>
+                            <textarea id="plaintext_aes" name="plaintext_aes" placeholder="Enter plaintext here" 
+                                autocomplete="off" maxlength="1000" rows="5"></textarea>
+                            <textarea id="key_output_aes" name="key_output_aes" placeholder="Generated key will be displayed here" 
+                                readonly rows="5"></textarea>
+                        </div>
+                        <textarea id="encrypt_output_aes" name="encrypt_output_aes" class="encrypt_output_aes" 
+                            placeholder="Encrypted text output" readonly></textarea>
+                    </div>
+                        <div class="button_container">
+                            <button class="button_alt" onclick="aes_encrypt()"><b>Encrypt</b></button>
+                            <button class="button_alt" onclick="aes_encrypt_clear()"><b>Clear</b></button>
+                        </div>
+                </div>
+                <div id="decrypt_aes" class="element_container" style="display:none">
+                    <div class="io_container">
+                        <div class="input_container">
+                            <textarea id="ciphertext_aes" name="ciphertext_aes" placeholder="Enter ciphertext here" 
+                                autocomplete="off" rows="5"></textarea>
+                            <textarea id="key_input_aes" name="key_input_aes" placeholder="Enter AES key here" 
+                                autocomplete="off" rows="5"></textarea>
+                        </div>
+                        <textarea id="decrypt_output_aes" name="decrypt_output_aes" class="decrypt_output_aes" 
+                            placeholder="Decrypted text output" readonly></textarea>
+                    </div>
+                    <div class="button_container">
+                        <button class="button_alt" onclick="aes_decrypt()"><b>Decrypt</b></button>
+                        <button class="button_alt" onclick="aes_decrypt_clear()"><b>Clear</b></button>
+                    </div>
+                </div>
+            </div>
+            <div id="rot13_tab_content" class="algo" style="display:none">
+                <div class="encryption_decryption_tab">
+                    <button class="mode_button" onclick="openMode(event, 'encrypt_rot13')">Encryption</button>
+                    <button class="mode_button" onclick="openMode(event, 'decrypt_rot13')">Decryption</button>
+                </div>
+                <hr style="width:100%">
+                <div class="explanation">
+                    <h3>ROT13</h3>
+                    <p>Also known as <b>"Caesar cipher shift 13"</b> because what it does is shift alphabets by 13 letters <span class="whisper">(a -> n)</span>.
+                        <br>
+                        This cipher is easily reversible, it shouldn't be used for important data like passwords
+                        <span class="whisper">(please NEVER do that or I will revoke your coding privileges)</span>.
+                        <br>
+                        Was used as a way to discuss about spoilers on internet forums before the || markdown days.
+                        <br>
+                    </p>
+                </div>
+                <div id="encrypt_rot13" class="element_container" style="display:none">
+                    <div class="io_container">
+                        <div class="input_container">
+                            <textarea id="plaintext_rot13" name="plaintext_rot13" placeholder="Enter plaintext here" 
+                                autocomplete="off" maxlength="1000" rows="5"></textarea>
+                        </div>
+                        <textarea id="encrypt_output_rot13" name="encrypt_output_rot13" class="encrypt_output_rot13" 
+                            placeholder="Encrypted text output" readonly></textarea>
+                    </div>
+                    <div class="button_container">
+                        <button class="button_alt" onclick="rot13_encrypt()"><b>Encrypt</b></button>
+                        <button class="button_alt" onclick="rot13_encrypt_clear()"><b>Clear</b></button>
+                    </div>
+                </div>
+                <div id="decrypt_rot13" class="element_container" style="display:none">
+                    <div class="io_container">
+                        <div class="input_container">
+                            <textarea id="ciphertext_rot13" name="ciphertext_rot13" placeholder="Enter ciphertext here" 
+                                autocomplete="off" rows="5"></textarea>
+                        </div>
+                        <textarea id="decrypt_output_rot13" name="decrypt_output_rot13" class="decrypt_output_rot13" 
+                            placeholder="Decrypted text output" readonly></textarea>
+                    </div>
+                    <div class="button_container">
+                        <button class="button_alt" onclick="rot13_decrypt()"><b>Decrypt</b></button>
+                        <button class="button_alt" onclick="rot13_decrypt_clear()"><b>Clear</b></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer>
+            <p>- 水月烏有 (@wuyoulerp) -</p>
+        </footer>
+        <script type="module" src="jscript.js"></script>
+    </body>
+</html>
