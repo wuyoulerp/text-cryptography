@@ -1,4 +1,4 @@
-\# text-cryptography
+# text-cryptography
 
 Text encryption and decryption (RSA and AES) made using Rust and WASM (also ROT13 encoder/decoder as a bonus).
 
