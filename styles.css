@@ -1,5 +1,3 @@
-/* background colour: #25252a, accent: #aaaec4, deep colour: #171719 */
-
 html * {
     font-family: "Klee One", cursive;
     font-weight: 400;
@@ -169,7 +167,6 @@ textarea {
 ::-webkit-scrollbar-thumb,
 .news-container::-webkit-scrollbar-thumb {
     background-color: #aaaec4;
-    border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover,

@@ -130,8 +130,6 @@ pub fn rsadec(private_pem: &str, ciphertext: &str) -> Result<String, JsValue> {
         .map_err(|e| JsValue::from_str(&e.to_string()))
 }
 
-
-
 #[wasm_bindgen]     // attribute macro (make the function available to JS)
 pub fn rot13enc(plaintext: &str) -> String {
     let encrypted = rot13(plaintext); 

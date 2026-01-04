@@ -1,0 +1,15 @@
+{
+  "name": "text-crypto-web",
+  "type": "module",
+  "version": "0.1.0",
+  "files": [
+    "text_crypto_web_bg.wasm",
+    "text_crypto_web.js",
+    "text_crypto_web.d.ts"
+  ],
+  "main": "text_crypto_web.js",
+  "types": "text_crypto_web.d.ts",
+  "sideEffects": [
+    "./snippets/*"
+  ]
+}
